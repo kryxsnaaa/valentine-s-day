@@ -3,58 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Favorite Person</title>
+    <title>Para Sa Favorito Ko</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { background: #fff0f3; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: 'Arial', sans-serif; overflow: hidden; }
-        
-        /* The Clickable Gift */
-        #gift { font-size: 100px; cursor: pointer; transition: 0.3s; animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-        /* The Hidden Content */
-        #content { display: none; text-align: center; opacity: 0; transition: opacity 2s ease-in; }
-        
-        img { width: 280px; height: 280px; object-fit: cover; border-radius: 50%; border: 8px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        
-        .letter { max-width: 400px; color: #590d22; line-height: 1.6; background: rgba(255,255,255,0.5); padding: 20px; border-radius: 15px; }
-        
-        h1 { color: #ff4d6d; margin-top: 0; }
+        body { background: #fff0f3; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; text-align: center; }
+        .container { width: 90%; max-width: 500px; padding: 20px; }
+        h1 { color: #ff4d6d; font-size: 1.8rem; min-height: 60px; }
+        .cat-gif { width: 200px; height: 200px; object-fit: contain; margin-bottom: 20px; border-radius: 15px; }
+        .btn-container { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; position: relative; height: 100px; }
+        button { padding: 15px 25px; font-size: 1.2rem; border: none; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        #yesBtn { background-color: #4CAF50; color: white; z-index: 1000; }
+        #noBtn { background-color: #ff4d6d; color: white; position: relative; }
+        #finalContent { display: none; opacity: 0; transition: opacity 1.5s; overflow-y: auto; max-height: 90vh; }
+        .main-img { width: 250px; border-radius: 20px; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .letter { background: white; padding: 20px; border-radius: 15px; color: #590d22; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="gift" onclick="openValentine()">🎁</div>
-    <p id="hint">Click to open your gift!</p>
+    <div id="gameSection" class="container">
+        <img id="displayGif" class="cat-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MDJ9IbxxvDUQM/giphy.gif" alt="cat">
+        <h1 id="questionText">Will you be my valentine? ❤️</h1>
+        
+        <div class="btn-container">
+            <button id="yesBtn" onclick="celebrate()">Yes</button>
+            <button id="noBtn" onclick="handleNo()">No</button>
+        </div>
+    </div>
 
-    <div id="content">
-        <img src="us.jpg" alt="Us">
+    <div id="finalContent" class="container">
+        <img class="cat-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/K6jS2rVjt7Zp6/giphy.gif" alt="kiss">
+        <br>
+        <img src="us.jpg" alt="Us" class="main-img">
         <div class="letter">
-            <h1>Happy Valentine's Day!</h1>
-            <p>I wanted to build you something as unique as you are. Thank you for being my person and for all the memories we've made.</p>
-            <p>❤️ <b>I love you!</b></p>
+            <h2>I love you too! ❤️</h2>
+            <p>
+                [PASTE YOUR CUSTOM LETTER HERE]<br><br>
+                E.g., "Hi Love! Happy Valentine's Day. I'm so lucky to have you..."
+            </p>
         </div>
     </div>
 
     <script>
-        function openValentine() {
-            // Hide the gift
-            document.getElementById('gift').style.display = 'none';
-            document.getElementById('hint').style.display = 'none';
-            
-            // Show the photo and letter
-            const content = document.getElementById('content');
-            content.style.display = 'block';
-            setTimeout(() => { content.style.opacity = '1'; }, 100);
+        let phase = 1;
+        let yesSize = 1;
 
-            // Trigger Confetti!
-            var duration = 3 * 1000;
-            var end = Date.now() + duration;
+        function handleNo() {
+            const gif = document.getElementById('displayGif');
+            const question = document.getElementById('questionText');
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
 
+            if (phase === 1) {
+                // 2nd GIF: Tear in eyes
+                gif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/9Y5BbDSkSTiY8/giphy.gif";
+                question.innerText = "hindi mo ba talaga ako love? 🥺";
+                phase = 2;
+            } else {
+                // 3rd GIF: Crying Hard
+                gif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueG5ueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/v9G3NGUkE69VK/giphy.gif";
+                question.innerText = "love mo ba ako? 😭";
+                
+                // Move the No button randomly
+                const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = x + 'px';
+                noBtn.style.top = y + 'px';
+            }
+
+            // Make Yes button grow every time he tries to click No
+            yesSize += 0.5;
+            yesBtn.style.transform = `scale(${yesSize})`;
+        }
+
+        function celebrate() {
+            document.getElementById('gameSection').style.display = 'none';
+            const final = document.getElementById('finalContent');
+            final.style.display = 'block';
+            setTimeout(() => { final.style.opacity = '1'; }, 100);
+
+            // Confetti
+            var end = Date.now() + (3 * 1000);
             (function frame() {
-              confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ff758f'] });
-              confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ff758f'] });
-              if (Date.now() < end) { requestAnimationFrame(frame); }
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
             }());
         }
     </script>
